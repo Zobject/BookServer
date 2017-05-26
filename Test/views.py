@@ -44,7 +44,11 @@ def insert(request):
 def booklist(request):
     if request.method=="GET":
         date=list(collection.find())
-    return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
+        for i in  date:
+            i['Upload'] = str(i.get('Upload'))
+    c=list(reversed(date))
+    print str(c)
+    return HttpResponse(json.dumps(c,default=json_util.default),status=200,content_type='application/json')
 
 
 
