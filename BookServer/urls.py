@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-
+from Test import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^ok/', views.index),
+    url(r'^insert/', views.insert),
+    url(r'^getbooklist/$', views.booklist),
+    url(r'^bookdetails/$', views.bookdetails),
 ]
