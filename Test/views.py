@@ -65,12 +65,11 @@ def booklist(request):
         if int(target)==0:
             if int(sum) < booksum:
                 date=list(collection.find().skip(sum-1))
-                date.append({"sum": booksum})
+                c={"sum": booksum}
         for i in  date:
             i['Upload'] = str(i.get('Upload'))
 
-        c=list(reversed(date))
-        print str(c)
+        c['result']=list(reversed(date))
     return HttpResponse(json.dumps(c,default=json_util.default),status=200,content_type='application/json')
 
 
