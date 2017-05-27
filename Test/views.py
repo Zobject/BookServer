@@ -59,8 +59,10 @@ def booklist(request):
             if  booksum < 5  :
                  date = list(collection.find())
             else:
-                if booksum-5*(int(page))<=0:
+                if int(page)==booksum/5+1:
                     date = list(collection.find().limit((booksum-5*(int(page)))%5))
+                elif int(page)>booksum/5+1:
+                    date=[]
                 else:
                     date=list(collection.find().skip(booksum-5*(int(page))).limit(5))
         if int(target)==0:
@@ -69,8 +71,8 @@ def booklist(request):
                 c={"sum": str(booksum)}
         for i in  date:
             i['Upload'] = str(i.get('Upload'))
-
-        c['result']=list(reversed(date))
+        if date!=None:
+            c['result']=list(reversed(date))
     return HttpResponse(json.dumps(c,default=json_util.default),status=200,content_type='application/json')
 
 
@@ -86,5 +88,11 @@ def bookdetails(request):
         date['Upload']=str(date.get('Upload'))
         print date
     return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
+
+
+# @csrf_exempt
+# def userInfo(request):
+#     if request.method =="POST":
+
 
 
