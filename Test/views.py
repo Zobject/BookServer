@@ -65,7 +65,7 @@ def booklist(request):
                     date=list(collection.find().skip(booksum-5*(int(page))).limit(5))
         if int(target)==0:
             if int(sum) < booksum:
-                date=list(collection.find().skip(sum-1))
+                date=list(collection.find().skip(int(sum)-1))
                 c={"sum": booksum}
         for i in  date:
             i['Upload'] = str(i.get('Upload'))
