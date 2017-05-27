@@ -69,6 +69,8 @@ def booklist(request):
             if int(sum) < booksum:
                 date=list(collection.find().skip(int(sum)))
                 c={"sum": str(booksum)}
+            else:
+                date=[]
         for i in  date:
             i['Upload'] = str(i.get('Upload'))
         if date!=None:
