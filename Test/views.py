@@ -44,6 +44,7 @@ def insert(request):
 def booklist(request):
     if request.method=="POST":
         date=[]
+        c={}
         content=JSONParser().parse(request)
         page=content.get('page')
         target=content.get('target')
@@ -54,7 +55,7 @@ def booklist(request):
             #sum=collection.find().count()
             if int(page)==1:
                 sumindatabase = collection.find().count()
-                date.append({"sum": sumindatabase})
+                c = {"sum": sumindatabase}
             if  booksum < 5  :
                  date = list(collection.find())
             else:
