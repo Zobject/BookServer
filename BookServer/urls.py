@@ -22,4 +22,7 @@ urlpatterns = [
     url(r'^insert/', views.insert),
     url(r'^getbooklist/$', views.booklist),
     url(r'^bookdetails/$', views.bookdetails),
+    url(r'^userInfo/$', views.userInfo),
+    url(r'^listenlist/$', views.listenlist),
+    url(r'^listendetails/$', views.listendetails),
 ]
