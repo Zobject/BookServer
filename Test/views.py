@@ -139,12 +139,12 @@ def createuserlove(request):
 def getuserlove(request):
   collection = db.UserInfo
   if request.method == "POST":
-    result={}
+
     content = JSONParser().parse(request)
     Name = content.get('Name')
     date=list(collection.find({'Name':Name}))
-    result={'result':date}
-    return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
+
+    return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
         # if  target==None:
         #     if collection.find({'Name':Name}).count()==0:
         #         doc={'Name':Name,'Love':[]}
