@@ -1,7 +1,9 @@
+from django import forms
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from rest_framework.parsers import JSONParser
+
 import datetime
 import pymongo
 import json
@@ -19,6 +21,11 @@ collection=db.Book
 def index(request):
     return render(request, 'addbook.html')
 
+
+
+class UserForm(forms.Form):
+    username = forms.CharField()
+    headImg = forms.FileField()
 
 def insert(request):
     Name=request.GET['name']
@@ -38,6 +45,16 @@ def insert(request):
     print doc
     collection.insert(doc)
     return  render(request,'success.html')
+
+@csrf_exempt
+def musicurl(request):
+    if request.method=='POST':
+        url=UserForm(request.POST,request.FILES)
+        if url.is_valid():
+            return  HttpResponse('upload ok1')
+        else:
+            url=UserForm()
+        return render(request,'upload.html',{'url':url})
 
 
 @csrf_exempt
@@ -93,25 +110,53 @@ def bookdetails(request):
 
 
 @csrf_exempt
-def userInfo(request):
+def createuserinfo(request):
     collection=db.UserInfo
     if request.method =="POST":
+
         content = JSONParser().parse(request)
         Name=content.get('Name')
-        Heard=content.get('Heard')
+        if collection.find({'Name': Name}).count() == 0:
+            doc={'Name':Name,'Love':[]}
+            collection.insert(doc)
+        return JsonResponse({'target':'success'})
+
+@csrf_exempt
+def createuserlove(request):
+    collection = db.UserInfo
+    if request.method == "POST":
+        content = JSONParser().parse(request)
+        Name = content.get('Name')
         Love=content.get('Love')
-        print Love
-        if Heard== None and Love==None:
-            if collection.find({'Name':Name}).count()==0:
-                doc={'Name':Name,'Heard':[],'Love':[]}
-                collection.insert(doc)
-        if Heard!= None:
-            collection.update({'Name':Name},{'$addToSet':{'Heard':Heard}})
-        if Love!= None or Love!='':
-            collection.update({'Name': Name}, {'$addToSet': {'Love': Love}})
-        date = list(collection.find({'Name': Name}))
-        returndate = {'result': date}
-        return  HttpResponse(json.dumps(returndate,default=json_util.default),status=200,content_type='application/json')
+        collection.update({'Name': Name}, {'$addToSet': {'Love': Love}})
+        return JsonResponse({'target': 'success'})
+
+
+
+
+
+@csrf_exempt
+def getuserlove(request):
+  collection = db.UserInfo
+  if request.method == "POST":
+    result={}
+    content = JSONParser().parse(request)
+    Name = content.get('Name')
+    date=list(collection.find({'Name':Name}))
+    result={'result':date}
+    return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
+        # if  target==None:
+        #     if collection.find({'Name':Name}).count()==0:
+        #         doc={'Name':Name,'Love':[]}
+        #         collection.insert(doc)
+        #         return  JsonResponse({'target':'success'})
+        #     else:
+        #         collection.update({'Name': Name}, {'$addToSet': {'Love': Love}})
+        # date = list(collection.find({'Name': Name}))
+        # returndate = {'result': date}
+        # return  HttpResponse(json.dumps(returndate,default=json_util.default),status=200,content_type='application/json')
+
+
 
 
 

@@ -16,13 +16,21 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from Test import views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^ok/', views.index),
     url(r'^insert/', views.insert),
     url(r'^getbooklist/$', views.booklist),
     url(r'^bookdetails/$', views.bookdetails),
-    url(r'^userInfo/$', views.userInfo),
+
+    url(r'^createuserinfo/$', views.createuserinfo),
+    url(r'^getuserlove/$', views.getuserlove),
+    url(r'^createuserlove/$', views.createuserlove),
+
+
+
     url(r'^listenlist/$', views.listenlist),
     url(r'^listendetails/$', views.listendetails),
+    url(r'^upload/$', views.listendetails),
 ]
