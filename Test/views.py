@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse,JsonResponse
 from rest_framework.parsers import JSONParser
-
+from  models import User
 import datetime
 import pymongo
 import json
@@ -51,6 +51,12 @@ def musicurl(request):
     if request.method=='POST':
         url=UserForm(request.POST,request.FILES)
         if url.is_valid():
+            username = url.cleaned_data['username']
+            headImg = url.cleaned_data['headImg']
+            user = User()
+            user.username = username
+            user.headImg = headImg
+            user.save()
             return  HttpResponse('upload ok!')
     else:
         url=UserForm()
