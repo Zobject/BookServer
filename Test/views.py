@@ -1,6 +1,6 @@
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse,JsonResponse
 from rest_framework.parsers import JSONParser
 
@@ -46,15 +46,15 @@ def insert(request):
     collection.insert(doc)
     return  render(request,'success.html')
 
-# @csrf_exempt
-# def musicurl(request):
-#     if request.method=='POST':
-#         url=UserForm(request.POST,request.FILES)
-#         if url.is_valid():
-#             return  HttpResponse('upload ok1')
-#         else:
-#             url=UserForm()
-#         return render(request,'upload.html',{'url':url})
+@csrf_exempt
+def musicurl(request):
+    if request.method=='POST':
+        url=UserForm(request.POST,request.FILES)
+        if url.is_valid():
+            return  HttpResponse('upload ok!')
+    else:
+        url=UserForm()
+    return render_to_response('upload.html', {'uf': url})
 
 
 @csrf_exempt
@@ -210,7 +210,7 @@ def listendetails(request):
         print None
         date=collection.find({'Name':Name}).next()
         date['Upload']=str(date.get('Upload'))
-        print date
+        #print date
     return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
 
 
