@@ -46,15 +46,15 @@ def insert(request):
     collection.insert(doc)
     return  render(request,'success.html')
 
-@csrf_exempt
-def musicurl(request):
-    if request.method=='POST':
-        url=UserForm(request.POST,request.FILES)
-        if url.is_valid():
-            return  HttpResponse('upload ok1')
-        else:
-            url=UserForm()
-        return render(request,'upload.html',{'url':url})
+# @csrf_exempt
+# def musicurl(request):
+#     if request.method=='POST':
+#         url=UserForm(request.POST,request.FILES)
+#         if url.is_valid():
+#             return  HttpResponse('upload ok1')
+#         else:
+#             url=UserForm()
+#         return render(request,'upload.html',{'url':url})
 
 
 @csrf_exempt
