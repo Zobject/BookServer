@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^createuserinfo/$', views.createuserinfo),
     url(r'^getuserlove/$', views.getuserlove),
     url(r'^createuserlove/$', views.createuserlove),
-
+    url(r'^removeuserlove/$', views.removeuserlove),
 
 
     url(r'^listenlist/$', views.listenlist),

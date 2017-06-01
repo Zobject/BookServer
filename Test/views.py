@@ -220,7 +220,16 @@ def getuserlove(request):
         # returndate = {'result': date}
         # return  HttpResponse(json.dumps(returndate,default=json_util.default),status=200,content_type='application/json')
 
+@csrf_exempt
+def removeuserlove(request):
+  collection = db.UserInfo
+  if request.method == "POST":
 
+    content = JSONParser().parse(request)
+    Name = content.get('Name')
+    Love = content.get('Love')
+    collection.update({'Name':Name},{'$pull':{'Love':Love}})
+    return JsonResponse({'target':'success'})
 
 
 
