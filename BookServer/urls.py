@@ -20,7 +20,6 @@ from Test import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^ok/', views.index),
-    url(r'^insert/', views.insert),
     url(r'^upload/', views.musicurl),
 
 

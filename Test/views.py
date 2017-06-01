@@ -50,24 +50,6 @@ class ProgressPercentage(object):
 class UserForm(forms.Form):
     File = forms.FileField()
 
-def insert(request):
-    Name=request.GET['name']
-    Musicurl=request.GET['musicurl']
-    Author =request.GET['author']
-    Press =request.GET['Press']
-    Column =request.GET['Column']
-    Recommended = request.GET['Recommended']
-    Probation =request.GET['Probation']
-    Cover =request.GET['Cover']
-    Brief =request.GET['brief']
-    Audio = request.GET['Audio']
-    Suitable =request.GET['Suitable']
-    if(collection.find({"Name":Name}).count()>0):
-        return  render(request,'success.html')
-    doc={'Name':Name,'Musicurl':Musicurl,'Author':Author,'Press':Press,'Column':Column,'Recommended':Recommended,'Probation':Probation,'Cover':Cover,'Brief':Brief,'Audio':Audio,'Suitable':Suitable,'Upload':datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),'Degree':0,'Free':0}
-    print doc
-    collection.insert(doc)
-    return  render(request,'success.html')
 
 @csrf_exempt
 def musicurl(request):
@@ -85,7 +67,7 @@ def musicurl(request):
         Brief = request.POST['brief']
         Audio = request.POST['Audio']
         Suitable = request.POST['Suitable']
-        print Name
+
         print request.POST
         files= request.FILES.getlist('File')
 
@@ -94,7 +76,7 @@ def musicurl(request):
             for chunk in f.chunks():
                 destination.write(chunk)
 
-                filename = '/home/ubuntu/BookServer/upload/'+f.name
+                filename = '/Users/zobject/Git/BookServer/upload/'+f.name
                 uploadname = f.name
                 s3 = boto3.client('s3')
                 bucket_name = 'bookmusic'
@@ -105,8 +87,15 @@ def musicurl(request):
                 else:
                     return HttpResponse('upload faile!')
             destination.close()
-
-        print files[0].name
+        path='https://s3.us-east-2.amazonaws.com/bookmusic/'
+        doc = {'Name': Name, 'Musicurl': path+files[0].name, 'Author': Author, 'Press': Press, 'Column': Column,
+               'Recommended': Recommended, 'Probation': Probation, 'Cover': path+files[1].name, 'Brief': Brief, 'Audio': Audio,
+               'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), 'Degree': 0,
+               'Free': 0}
+        print doc
+        if (collection.find({"Name": Name}).count() > 0):
+            return render('already exist!')
+        collection.insert(doc)
         return  HttpResponse('upload ok!')
     else:
         url=UserForm()
