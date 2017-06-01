@@ -1,4 +1,5 @@
 from django import forms
+from django.http import FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse,JsonResponse
@@ -9,6 +10,13 @@ import pymongo
 import json
 from  bson import json_util
 # Create your views here.
+
+
+import os
+import sys
+import threading
+
+import boto3
 
 try:
     conn=pymongo.MongoClient()
@@ -22,10 +30,25 @@ def index(request):
     return render(request, 'addbook.html')
 
 
+class ProgressPercentage(object):
+    percentage = 0
+    def __init__(self, filename):
+        self._filename = filename
+        self._size = float(os.path.getsize(filename))
+        self._seen_so_far = 0
+        self._lock = threading.Lock()
+    def __call__(self, bytes_amount):
+        # To simplify we'll assume this is hooked up
+        # to a single filename.
+        with self._lock:
+            self._seen_so_far += bytes_amount
+            global percentage
+            percentage = (self._seen_so_far / self._size) * 100
+
+
 
 class UserForm(forms.Form):
-    username = forms.CharField()
-    headImg = forms.FileField()
+    File = forms.FileField()
 
 def insert(request):
     Name=request.GET['name']
@@ -41,7 +64,7 @@ def insert(request):
     Suitable =request.GET['Suitable']
     if(collection.find({"Name":Name}).count()>0):
         return  render(request,'success.html')
-    doc={'Name':Name,'Musicurl':Musicurl,'Author':Author,'Press':Press,'Column':Column,'Recommended':Recommended,'Probation':Probation,'Cover':Cover,'Brief':Brief,'Audio':Audio,'Suitable':Suitable,'Upload':datetime.datetime.now(),'Degree':0,'Free':0}
+    doc={'Name':Name,'Musicurl':Musicurl,'Author':Author,'Press':Press,'Column':Column,'Recommended':Recommended,'Probation':Probation,'Cover':Cover,'Brief':Brief,'Audio':Audio,'Suitable':Suitable,'Upload':datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),'Degree':0,'Free':0}
     print doc
     collection.insert(doc)
     return  render(request,'success.html')
@@ -49,17 +72,45 @@ def insert(request):
 @csrf_exempt
 def musicurl(request):
     if request.method=='POST':
-        url=UserForm(request.POST,request.FILES)
-        if url.is_valid():
-            username = url.cleaned_data['username']
-            headImg = url.cleaned_data['headImg']
-            user = User()
-            user.username = username
-            user.headImg = headImg
-            user.save()
-            return  HttpResponse('upload ok!')
+        #url=UserForm(request.POST,request.FILES)
+
+        Name = request.POST['name']
+        #Musicurl = request.GET['musicurl']
+        Author = request.POST['author']
+        Press = request.POST['Press']
+        Column = request.POST['Column']
+        Recommended = request.POST['Recommended']
+        Probation = request.POST['Probation']
+       # Cover = request.GET['Cover']
+        Brief = request.POST['brief']
+        Audio = request.POST['Audio']
+        Suitable = request.POST['Suitable']
+        print Name
+        print request.POST
+        files= request.FILES.getlist('File')
+
+        for f in files:
+            destination = open('./upload/' + f.name, 'wb+')
+            for chunk in f.chunks():
+                destination.write(chunk)
+
+                filename = '/home/ubuntu/BookServer/upload/'+f.name
+                uploadname = f.name
+                s3 = boto3.client('s3')
+                bucket_name = 'bookmusic'
+                s3.upload_file(filename, bucket_name, uploadname, Callback=ProgressPercentage(filename))
+
+                if percentage == 100.0:
+                    print 'success'
+                else:
+                    return HttpResponse('upload faile!')
+            destination.close()
+
+        print files[0].name
+        return  HttpResponse('upload ok!')
     else:
         url=UserForm()
+        print url
     return render_to_response('upload.html', {'uf': url})
 
 
