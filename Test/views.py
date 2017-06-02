@@ -1,16 +1,17 @@
+#coding=utf8
 from django import forms
-from django.http import FileResponse
+from DjangoUeditor.forms import UEditorField
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse,JsonResponse
 from rest_framework.parsers import JSONParser
-from  models import User
+
 import datetime
 import pymongo
 import json
-from  bson import json_util
+from  bson import json_util , ObjectId
 # Create your views here.
-
+import  cgi
 
 import os
 import sys
@@ -26,9 +27,9 @@ except:
 db=conn['BookServer']
 collection=db.Book
 
-def index(request):
-    return render(request, 'addbook.html')
 
+class UserForm(forms.Form):
+    File = forms.FileField()
 
 class ProgressPercentage(object):
     percentage = 0
@@ -47,8 +48,33 @@ class ProgressPercentage(object):
 
 
 
-class UserForm(forms.Form):
-    File = forms.FileField()
+
+class TestUEditorForm(forms.Form):
+    Description = UEditorField("描述", initial="abc", width=600, height=800)
+@csrf_exempt
+def index(request):
+    if request.method=='POST':
+        collection=db.Read
+        Name=request.POST['name']
+        c= request.POST['Description']
+        print c
+        print Name
+
+        doc={'Name':Name,'date':c}
+        #print doc
+        collection.insert(doc)
+
+        return HttpResponse('success!')
+    else:
+        url = UserForm()
+        print url
+        form=TestUEditorForm()
+        ls=[url,form]
+        return  render(request,'new.html',{'form':ls})
+
+
+
+
 #
 # def insert(request):
 #     Name=request.GET['name']
@@ -163,12 +189,11 @@ def booklist(request):
 @csrf_exempt
 def bookdetails(request):
     if request.method =="POST":
+        collection = db.Read
         #print request
         content=JSONParser().parse(request)
         Name=content.get('Name')
-        print None
         date=collection.find({'Name':Name}).next()
-        date['Upload']=str(date.get('Upload'))
         print date
     return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
 
