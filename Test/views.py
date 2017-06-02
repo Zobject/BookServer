@@ -193,7 +193,7 @@ def bookdetails(request):
         #print request
         content=JSONParser().parse(request)
         Name=content.get('Name')
-        date=collection.find({'Name':Name}).next()
+        date=collection.find_one({'Name':Name})
         print date
     return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
 
