@@ -1,6 +1,6 @@
 #coding=utf8
 from __future__ import unicode_literals
-from ckeditor.fields import RichTextField
+#from ckeditor.fields import RichTextField
 from django.db import models
 from DjangoUeditor.models import UEditorField
 # Create your models here.
