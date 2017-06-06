@@ -54,8 +54,8 @@ def addbook(request):
             destination.write(chunk)
         destination.close()
         replacebefore=str(content)
-        replaceafter=replacebefore.replace('img src=\"','img src=\"52.15.123.162:8000')
-        cover= '52.15.123.162:8000/media/bookcover/'+f.name
+        replaceafter=replacebefore.replace('img src=\"','img src=\"http://52.15.123.162:8000')
+        cover= 'http://52.15.123.162:8000/media/bookcover/'+f.name
         #print replaceafter
         doc={'Name':Name,'Cover':cover,'date':replaceafter}
         print doc
