@@ -109,7 +109,7 @@ def addlisten(request):
         files= request.FILES.getlist('File')
 
         for f in files:
-            destination = open('./upload/' + f.name, 'wb+')
+            destination = open('./media/listen/' + f.name, 'wb+')
             for chunk in f.chunks():
                 destination.write(chunk)
                 #filename='/Users/zobject/Git/BookServer/upload/'+f.name
