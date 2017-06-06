@@ -155,13 +155,13 @@ def booklist(request):
             if int(page)==1:
                 sumindatabase = collection.find().count()
                 c = {"sum": str(sumindatabase)}
-                if  booksum < 5  :
-                     date = list(collection.find())
+            if  booksum < 5 and  int(page)== 1  :
+                   date = list(collection.find())
             else:
                 if int(page)==booksum/5+1:
-                        date = list(collection.find().limit((booksum-5*(int(page)))%5))
+                    date = list(collection.find().limit((booksum-5*(int(page)))%5))
                 elif int(page)>booksum/5+1:
-                        date=[]
+                    date=[]
                 else:
                     date=list(collection.find().skip(booksum-5*(int(page))).limit(5))
         if int(target)==0:
@@ -275,7 +275,7 @@ def listenlist(request):
             if int(page)==1:
                 sumindatabase = collection.find().count()
                 c = {"sum": str(sumindatabase)}
-            if  booksum < 5  :
+            if  booksum < 5 and int(page)== 1 :
                  date = list(collection.find())
             else:
                 if int(page)==booksum/5+1:
