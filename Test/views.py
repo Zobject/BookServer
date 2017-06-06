@@ -180,7 +180,7 @@ def booklist(request):
 @csrf_exempt
 def bookdetails(request):
     if request.method =="POST":
-        collection = db.Read
+        collection = db.Book
         #print request
         content=JSONParser().parse(request)
         Name=content.get('Name')
