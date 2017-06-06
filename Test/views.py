@@ -46,6 +46,7 @@ def addbook(request):
     if request.method=='POST':
         collection=db.Book
         Name=request.POST['name']
+        Brief=request.POST['name1']
         content= request.POST['Description']
         f= request.FILES.get('File')
         print f
@@ -57,7 +58,7 @@ def addbook(request):
         replaceafter=replacebefore.replace('img src=\"','img src=\"http://52.15.123.162:8000')
         cover= 'http://52.15.123.162:8000/media/bookcover/'+f.name
         #print replaceafter
-        doc={'Name':Name,'Cover':cover,'date':replaceafter}
+        doc={'Name':Name,'Brief':Brief,'Cover':cover,'date':replaceafter}
         print doc
         collection.insert(doc)
 
