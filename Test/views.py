@@ -113,7 +113,7 @@ def addlisten(request):
             for chunk in f.chunks():
                 destination.write(chunk)
                 #filename='/Users/zobject/Git/BookServer/upload/'+f.name
-                filename = '/home/ubuntu/BookServer/upload/'+f.name
+                filename = '/home/ubuntu/BookServer/media/listen/'+f.name
                 uploadname = f.name
                 s3 = boto3.client('s3')
                 bucket_name = 'bookmusic'
@@ -124,8 +124,9 @@ def addlisten(request):
                     return HttpResponse('upload faile!')
             destination.close()
         path='https://s3.us-east-2.amazonaws.com/bookmusic/'
+        cover = 'http://52.15.123.162:8000/media/listen/'
         doc = {'Name': Name, 'Musicurl': path+files[0].name, 'Author': Author, 'Press': Press, 'Column': Column,
-               'Recommended': Recommended, 'Probation': Probation, 'Cover': path+files[1].name, 'Brief': Brief, 'Audio': Audio,
+               'Recommended': Recommended, 'Probation': Probation, 'Cover': cover+files[1].name, 'Brief': Brief, 'Audio': Audio,
                'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), 'Degree': 0,
                'Free': 0}
         print doc
