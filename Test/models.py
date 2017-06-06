@@ -5,7 +5,7 @@ from django.db import models
 from DjangoUeditor.models import UEditorField
 # Create your models here.
 class User(models.Model):
-    Audiofile = models.FileField(upload_to = './upload/')
+    Audiofile = models.FileField(upload_to = './media/bookcover/')
 
 class Blog(models.Model):
 	content = UEditorField('内容', height=500, width=1200,

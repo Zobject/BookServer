@@ -31,37 +31,34 @@ collection=db.Book
 class UserForm(forms.Form):
     File = forms.FileField()
 
-class ProgressPercentage(object):
-    percentage = 0
-    def __init__(self, filename):
-        self._filename = filename
-        self._size = float(os.path.getsize(filename))
-        self._seen_so_far = 0
-        self._lock = threading.Lock()
-    def __call__(self, bytes_amount):
-        # To simplify we'll assume this is hooked up
-        # to a single filename.
-        with self._lock:
-            self._seen_so_far += bytes_amount
-            global percentage
-            percentage = (self._seen_so_far / self._size) * 100
 
 
 
 
+#UEditor
 class TestUEditorForm(forms.Form):
     Description = UEditorField("描述", initial="abc", width=600, height=800)
-@csrf_exempt
-def index(request):
-    if request.method=='POST':
-        collection=db.Read
-        Name=request.POST['name']
-        c= request.POST['Description']
-        print c
-        print Name
 
-        doc={'Name':Name,'date':c}
-        #print doc
+
+
+@csrf_exempt
+def addbook(request):
+    if request.method=='POST':
+        collection=db.Book
+        Name=request.POST['name']
+        content= request.POST['Description']
+        f= request.FILES.get('File')
+        print f
+        destination = open('./media/bookcover/' + f.name, 'wb+')
+        for chunk in f.chunks():
+            destination.write(chunk)
+        destination.close()
+        replacebefore=str(content)
+        replaceafter=replacebefore.replace('img src=\"','img src=\"52.15.123.162:8000')
+        cover= '52.15.123.162:8000/media/bookcover/'+f.name
+        #print replaceafter
+        doc={'Name':Name,'Cover':cover,'date':content}
+        print doc
         collection.insert(doc)
 
         return HttpResponse('success!')
@@ -70,36 +67,31 @@ def index(request):
         print url
         form=TestUEditorForm()
         ls=[url,form]
-        return  render(request,'new.html',{'form':ls})
+        return  render(request,'addbook.html',{'form':ls})
 
 
+class ProgressPercentage(object):
+    percentage = 0
+    def __init__(self, filename):
+        self._filename = filename
+        self._size = float(os.path.getsize(filename))
+        self._seen_so_far = 0
+        self._lock = threading.Lock()
+    def __call__(self, bytes_amount):
 
+        # To simplify we'll assume this is hooked up
+        # to a single filename.
+        with self._lock:
+            self._seen_so_far += bytes_amount
+            global percentage
+            percentage = (self._seen_so_far / self._size) * 100
 
-#
-# def insert(request):
-#     Name=request.GET['name']
-#     Musicurl=request.GET['musicurl']
-#     Author =request.GET['author']
-#     Press =request.GET['Press']
-#     Column =request.GET['Column']
-#     Recommended = request.GET['Recommended']
-#     Probation =request.GET['Probation']
-#     Cover =request.GET['Cover']
-#     Brief =request.GET['brief']
-#     Audio = request.GET['Audio']
-#     Suitable =request.GET['Suitable']
-#     if(collection.find({"Name":Name}).count()>0):
-#         return  render(request,'success.html')
-#     doc={'Name':Name,'Musicurl':Musicurl,'Author':Author,'Press':Press,'Column':Column,'Recommended':Recommended,'Probation':Probation,'Cover':Cover,'Brief':Brief,'Audio':Audio,'Suitable':Suitable,'Upload':datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),'Degree':0,'Free':0}
-#     print doc
-#     collection.insert(doc)
-#     return  render(request,'success.html')
 
 @csrf_exempt
-def musicurl(request):
+def addlisten(request):
     if request.method=='POST':
         #url=UserForm(request.POST,request.FILES)
-
+        collection=db.Listen
         Name = request.POST['name']
         #Musicurl = request.GET['musicurl']
         Author = request.POST['author']
@@ -119,13 +111,12 @@ def musicurl(request):
             destination = open('./upload/' + f.name, 'wb+')
             for chunk in f.chunks():
                 destination.write(chunk)
-                #filename='/Users/zobject/Git/BookServer/upload'
-                filename = '/home/ubuntu/BookServer/upload/'+f.name
+                filename='/Users/zobject/Git/BookServer/upload/'+f.name
+                #filename = '/home/ubuntu/BookServer/upload/'+f.name
                 uploadname = f.name
                 s3 = boto3.client('s3')
                 bucket_name = 'bookmusic'
                 s3.upload_file(filename, bucket_name, uploadname, Callback=ProgressPercentage(filename))
-
                 if percentage == 100.0:
                     print 'success'
                 else:
@@ -138,7 +129,7 @@ def musicurl(request):
                'Free': 0}
         print doc
         if (collection.find({"Name": Name}).count() > 0):
-            return render('already exist!')
+            return HttpResponse('already exist!')
         collection.insert(doc)
         return  HttpResponse('upload ok!')
     else:
@@ -260,7 +251,7 @@ def removeuserlove(request):
 
 @csrf_exempt
 def listenlist(request):
-
+    collection=db.Listen
     if request.method=="POST":
         date=[]
         c={}
@@ -300,7 +291,7 @@ def listenlist(request):
 
 @csrf_exempt
 def listendetails(request):
-    collection = db.Listener
+    collection = db.Listen
     if request.method =="POST":
         #print request
         content=JSONParser().parse(request)
