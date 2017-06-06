@@ -204,12 +204,20 @@ def createuserinfo(request):
 
 @csrf_exempt
 def createuserlove(request):
-    collection = db.UserInfo
+    collection=db.Book
     if request.method == "POST":
         content = JSONParser().parse(request)
         Name = content.get('Name')
         Love=content.get('Love')
-        collection.update({'Name': Name}, {'$addToSet': {'Love': Love}})
+        Taregt=content.get('Target')
+        if Taregt=='0':
+            date=collection.find_one({'Name': Love})
+            print str(date)
+            collection = db.UserInfo
+            collection.update({'Name': Name}, {'$addToSet': {'Love': date}})
+        else:
+            collection = db.UserInfo
+            collection.update({'Name': Name}, {'$pull': {'Love': {'Name': Love}}})
         return JsonResponse({'target': 'success'})
 
 
@@ -245,7 +253,7 @@ def removeuserlove(request):
     content = JSONParser().parse(request)
     Name = content.get('Name')
     Love = content.get('Love')
-    collection.update({'Name':Name},{'$pull':{'Love':Love}})
+    collection.update({'Name':Name},{'$pull':{'Love':{'Name':Love}}})
     return JsonResponse({'target':'success'})
 
 
