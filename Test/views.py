@@ -123,9 +123,9 @@ def addlisten(request):
                 else:
                     return HttpResponse('upload faile!')
             destination.close()
-        path='https://s3.us-east-2.amazonaws.com/bookmusic/'
+        #path='https://s3.us-east-2.amazonaws.com/bookmusic/'
         cover = 'http://52.15.123.162:8000/media/listen/'
-        doc = {'Name': Name, 'Musicurl': path+files[0].name, 'Author': Author, 'Press': Press, 'Column': Column,
+        doc = {'Name': Name, 'Musicurl': files[0].name, 'Author': Author, 'Press': Press, 'Column': Column,
                'Recommended': Recommended, 'Probation': Probation, 'Cover': cover+files[1].name, 'Brief': Brief, 'Audio': Audio,
                'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), 'Degree': 0,
                'Free': 0}
