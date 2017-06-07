@@ -37,7 +37,7 @@ class UserForm(forms.Form):
 
 #UEditor
 class TestUEditorForm(forms.Form):
-    Description = UEditorField("描述", initial="abc", width=400, height=800)
+    Description = UEditorField("描述", initial="abc", width=370, height=800)
 
 
 
