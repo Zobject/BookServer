@@ -32,6 +32,7 @@ urlpatterns = [
 
 
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
+    url(r'test/',views.test),
 ]
 
 from django.conf import settings
