@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        body{ text-align:center}
+    </style>
     {%for i in form%}
       {{ i.media }}
     {%endfor%}
@@ -8,9 +11,10 @@
     <title>Title</title>
 </head>
 <body>
+<h1>添加图书</h1>
 <form action="/addbook/" enctype="multipart/form-data" method="POST">
-    书名:<input type="text" name="name" ><br>
-    简介:<input type="text" name="name1" ><br>
+    书名:<input type="text" name="name" style="width:400px"  height="60px" ><br><br>
+    简介:<input type="text" name="name1" style="width:400px;height:60px" ><br><br>
     封面:
     {%for i in form%}
     {{ i }}<br>

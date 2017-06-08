@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse,JsonResponse
 from rest_framework.parsers import JSONParser
-
+import random
 import datetime
 import pymongo
 import json
@@ -37,7 +37,7 @@ class UserForm(forms.Form):
 
 #UEditor
 class TestUEditorForm(forms.Form):
-    Description = UEditorField("描述", initial="abc", width=320, height=800)
+    Description = UEditorField("描述", initial="abc", width=400, height=600)
 
 
 
@@ -99,21 +99,21 @@ def addlisten(request):
         Press = request.POST['Press']
         Column = request.POST['Column']
         Recommended = request.POST['Recommended']
-        Probation = request.POST['Probation']
+        # Probation = request.POST['Probation']
        # Cover = request.GET['Cover']
         Brief = request.POST['brief']
-        Audio = request.POST['Audio']
+        # Audio = request.POST['Audio']
         Suitable = request.POST['Suitable']
 
-        print request.POST
+        # print request.POST
         files= request.FILES.getlist('File')
-
+        print files
         for f in files:
             destination = open('./media/listen/' + f.name, 'wb+')
             for chunk in f.chunks():
                 destination.write(chunk)
-                #filename='/Users/zobject/Git/BookServer/upload/'+f.name
-                filename = '/home/ubuntu/BookServer/media/listen/'+f.name
+                filename='/Users/zobject/Git/BookServer/media/listen/'+f.name
+                #filename = '/home/ubuntu/BookServer/media/listen/'+f.name
                 uploadname = f.name
                 s3 = boto3.client('s3')
                 bucket_name = 'bookmusic'
@@ -126,9 +126,8 @@ def addlisten(request):
         #path='https://s3.us-east-2.amazonaws.com/bookmusic/'
         cover = 'http://52.15.123.162:8000/media/listen/'
         doc = {'Name': Name, 'Musicurl': files[0].name, 'Author': Author, 'Press': Press, 'Column': Column,
-               'Recommended': Recommended, 'Probation': Probation, 'Cover': cover+files[1].name, 'Brief': Brief, 'Audio': Audio,
-               'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), 'Degree': 0,
-               'Free': 0}
+               'Recommended': Recommended,  'BookCover': cover+files[1].name, 'Brief': Brief, 'Musiccover': cover+files[2].name,
+               'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y.%m.%d"), 'Degree': random.randint(10000,100000)}
         print doc
         if (collection.find({"Name": Name}).count() > 0):
             return HttpResponse('already exist!')
@@ -310,6 +309,7 @@ def listendetails(request):
         date=collection.find({'Name':Name}).next()
         date['Upload']=str(date.get('Upload'))
         #print date
+        collection.update({'Name':Name},{'$inc':{'Degree':random.randint(1,10)}})
     return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
 
 
@@ -321,4 +321,4 @@ def test(request):
         print name
         content=collection.find_one({'Name':name})
         data=content.get('date')
-    return  HttpResponse(data)
+    return  HttpResponse(data,content_type='text/html')

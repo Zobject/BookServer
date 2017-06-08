@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+        <style>
+body{ text-align:center}
+</style>
 </head>
 <body>
-<h1>register</h1>
+<h1>添加听书资源</h1>
 
-<form method = "post" enctype="multipart/form-data" >
+    <form method = "post" enctype="multipart/form-data" >
+     书 名: <input type="text" name="name"style="width:400px;" ><br><br>
 
-    书名:<input type="text" name="name" ><br>
-    音频文件:<br>{{uf.as_p}}<br>
-    作者:<input type="text" name="author" ><br>
-    出版社:<input type="text" name="Press" ><br>
-    栏目:<select name="Column">
+    作 者:<input type="text" name="author" style="width:400px;"><br><br>
+    出版社:<input type="text" name="Press" style="width:400px;"><br><br>
+    栏 目:<select name="Column" >
         <option value="0">DIVCSS5</option>
         <option value="1">DIVCSS5</option>
         </select>
-        <br>
-    推荐语:<input type="text" name="Recommended" ><br>
-    试读:<input type="text" name="Probation" ><br>
-    封面图:<br>{{uf.as_p}}<br>
-    简介:<input type="text" name="brief" ><br>
-    音频时长:<input type="text" name="Audio" ><br>
-    适合人群:<input type="text" name="Suitable" ><br>
-<input type="submit" value="ok"/>
-</form>
+        <br><br>
+    推荐语:<input type="text" name="Recommended"style="width:400px;height:60px" ><br><br>
+    <!--试   读: <input type="text" name="Probation" style="width:400px;height:60px"><br><br>-->
+
+    简  介: <input type="text" name="brief"style="width:400px;height:60px"><br><br>
+    <!--音频时长:<input type="text" name="Audio" style="width:400px;height:60px"><br><br>-->
+    适合人群:<input type="text" name="Suitable"  style="width:400px;"><br><br>
+        音频文件:{{uf.as_p}}图书封面图:<br>{{uf.as_p}}<br> 音频封面图:<br>{{uf.as_p}}<br>
+    <input type="submit" value="提交" style="width:50px;height:10px" />
+    </form>
+
 </body>
 </html>
