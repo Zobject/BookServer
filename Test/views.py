@@ -112,8 +112,8 @@ def addlisten(request):
             destination = open('./media/listen/' + f.name, 'wb+')
             for chunk in f.chunks():
                 destination.write(chunk)
-                filename='/Users/zobject/Git/BookServer/media/listen/'+f.name
-                #filename = '/home/ubuntu/BookServer/media/listen/'+f.name
+                #filename='/Users/zobject/Git/BookServer/media/listen/'+f.name
+                filename = '/home/ubuntu/BookServer/media/listen/'+f.name
                 uploadname = f.name
                 s3 = boto3.client('s3')
                 bucket_name = 'bookmusic'
