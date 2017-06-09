@@ -338,5 +338,5 @@ def freemusic(request):
         else:
             data=list(collection.find().skip((page-1)*10).limit(10))
             result={'result':data}
-    return HttpResponse(json.dumps(result),status=200,content_type='application/json')
+    return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
 
