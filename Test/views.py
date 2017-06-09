@@ -324,7 +324,7 @@ def test(request):
     return  HttpResponse(data,content_type='text/html')
 
 
-
+@csrf_exempt
 def freemusic(request):
     result={}
     db=conn['FreeMusic']
