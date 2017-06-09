@@ -322,3 +322,19 @@ def test(request):
         content=collection.find_one({'Name':name})
         data=content.get('date')
     return  HttpResponse(data,content_type='text/html')
+
+
+
+def freemusic(request):
+    result={}
+    db=conn['FreeMusic']
+    collection=db.Music
+    if request.method=='POST':
+        page=request.POST['page']
+        if page >5:
+            result = {'result': 'null'}
+        else:
+            data=list(collection.find().skip((page-1)*10))
+            result={'result':data}
+    return HttpResponse(json.dumps(result),status=200,content_type='application/json')
+

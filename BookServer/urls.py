@@ -32,7 +32,7 @@ urlpatterns = [
 
 
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
-    url(r'test/',views.test),
+    url(r'freemusic/',views.freemusic),
 ]
 
 from django.conf import settings
