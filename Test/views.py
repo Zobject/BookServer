@@ -331,7 +331,7 @@ def freemusic(request):
     collection=db.Music
     if request.method=='POST':
         coetent=JSONParser().parse(request)
-        page=int(request.get('page'))
+        page=int(coetent.get('page'))
         print page
         if int(page) >5:
             result = {'result': 'null'}
