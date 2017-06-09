@@ -330,9 +330,10 @@ def freemusic(request):
     db=conn['FreeMusic']
     collection=db.Music
     if request.method=='POST':
-        page=request.POST['page']
+        coetent=JSONParser().parse(request)
+        page=int(request.get('page'))
         print page
-        if page >5:
+        if int(page) >5:
             result = {'result': 'null'}
         else:
             data=list(collection.find().skip((page-1)*10).limit(10))
