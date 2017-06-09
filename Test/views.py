@@ -331,6 +331,7 @@ def freemusic(request):
     collection=db.Music
     if request.method=='POST':
         page=request.POST['page']
+        print page
         if page >5:
             result = {'result': 'null'}
         else:
