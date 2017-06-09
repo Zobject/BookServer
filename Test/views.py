@@ -334,7 +334,7 @@ def freemusic(request):
         if page >5:
             result = {'result': 'null'}
         else:
-            data=list(collection.find().skip((page-1)*10))
+            data=list(collection.find().skip((page-1)*10).limit(10))
             result={'result':data}
     return HttpResponse(json.dumps(result),status=200,content_type='application/json')
 
