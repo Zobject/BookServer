@@ -323,6 +323,24 @@ def test(request):
         data=content.get('date')
     return  HttpResponse(data,content_type='text/html')
 
+@csrf_exempt
+def addmusic(request):
+    db=conn['FreeMusic']
+    collection=db.Music
+    if request.method=='POST':
+        title = request.POST['title']
+        musicurl=request.POST['musicurl']
+        imgurl=request.POST['imgurl']
+        uid=request.POST['uid']
+        # print musicurl
+        doc = {'url': musicurl, 'title': title, 'img': imgurl,'_id':uid}
+        if (collection.find({'_id':uid}).count()>0):
+            return HttpResponse('fail, already exist!')
+        else:
+            collection.insert(doc)
+        return  HttpResponse('success')
+    else:
+        return render(request,'addmusic.html')
 
 @csrf_exempt
 def freemusic(request):

@@ -4,10 +4,11 @@ from django.contrib import admin
 from Test import views
 from DjangoUeditor import urls as DjangoUeditor_urls
 urlpatterns = [
-    #后台添加页面 bookcover 读物  listen 音频文件
+    #后台添加页面 bookcover 读物  listen 音频文件  添加 music freemusic
     url(r'^admin/', admin.site.urls),
     url(r'^addbook/', views.addbook),
     url(r'^addlisten/', views.addlisten),
+    url(r'^addmusic',views.addmusic),
 
     #bookcover API接口
     url(r'^getbooklist/$', views.booklist),
