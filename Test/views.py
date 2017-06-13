@@ -334,7 +334,7 @@ def addmusic(request):
         uid=request.POST['uid']
         # print musicurl
         doc = {'url': musicurl, 'title': title, 'img': imgurl,'_id':uid}
-        if (collection.find({'_id':uid}).count()>0):
+        if (collection.find({'_id':uid}).count()>0 or collection.find({'url':musicurl}).count()>0 ):
             return HttpResponse('fail, already exist!')
         else:
             collection.insert(doc)
