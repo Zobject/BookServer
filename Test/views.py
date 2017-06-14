@@ -332,6 +332,7 @@ def addmusic(request):
         musicurl=request.POST['musicurl']
         imgurl=request.POST['imgurl']
         uid=request.POST['uid']
+        print type(uid)
         # print musicurl
         doc = {'url': musicurl, 'title': title, 'img': imgurl,'_id':uid}
         if (collection.find({'_id':uid}).count()>0 or collection.find({'url':musicurl}).count()>0 ):
@@ -354,7 +355,7 @@ def freemusic(request):
         if int(page) >5:
             result = {'result': 'null'}
         else:
-            data=list(collection.find().skip((page-1)*50).limit(50))
+            data=list(collection.find().skip((page-1)*50).limit(50).sort({'_id':1}))
             result={'result':data}
     return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
 
