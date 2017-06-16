@@ -346,11 +346,14 @@ def addmusic(request):
 
 def freedelet(request):
     if request.method=='GET':
+        db = conn['FreeMusic']
+        collection = db.Music
         id=request.GET['id']
         collection.remove({'_id':id})
         return render(request, 'success.html')
 
 def freechange(request):
+
     if request.method=='GET':
         db = conn['FreeMusic']
         collection = db.Music
