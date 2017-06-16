@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+{%for d in data %}
+    id：{{d.id}}<br>
+    标题：{{d.title}}<br>
+    图片地址：{{d.img}}<br>
+    音乐地址：{{d.url}}<br>
+<a href="/freedelet/?id={{d.id}}" >删除</a> <a href="/freechange/?id={{d.id}}"> 更改</a><br>
+{%endfor%}
+</body>
+</html>
+
+<!--?page={{id}}-->

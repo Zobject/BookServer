@@ -334,7 +334,7 @@ def addmusic(request):
         uid=request.POST['uid']
         print type(uid)
         # print musicurl
-        doc = {'url': musicurl, 'title': title, 'img': imgurl,'_id':uid}
+        doc = {'url': musicurl, 'title': title, 'img': imgurl,'_id':int(uid)}
         if (collection.find({'_id':uid}).count()>0 or collection.find({'url':musicurl}).count()>0 ):
             return HttpResponse('fail, already exist!')
         else:
@@ -342,6 +342,55 @@ def addmusic(request):
         return  HttpResponse('success')
     else:
         return render(request,'addmusic.html')
+
+
+def freedelet(request):
+    if request.method=='GET':
+        id=request.GET['id']
+        collection.remove({'_id':id})
+        return render(request, 'success.html')
+
+def freechange(request):
+    if request.method=='GET':
+        db = conn['FreeMusic']
+        collection = db.Music
+        id=request.GET['id']
+        data=collection.find_one({'_id':id})
+        data.update(id=data.pop("_id"))
+        return render(request, 'change.html', {'data': data})
+
+@csrf_exempt
+
+def changesome(request):
+    if request.method=='POST':
+        db = conn['FreeMusic']
+        collection = db.Music
+        title = request.POST['title']
+        musicurl=request.POST['musicurl']
+        imgurl=request.POST['imgurl']
+        uid=request.POST['uid']
+
+        collection.update({'_id': uid},{'$set':{'url': musicurl, 'title': title, 'img': imgurl, }})
+        return render(request, 'success.html')
+
+def changesomething(request):
+    db=conn['FreeMusic']
+    collection=db.Music
+    if request.method=='GET':
+            data=list(collection.find())
+            for d in  data:
+                d.update(id=d.pop('_id'))
+    return render(request,'test.html',{'data':data})
+
+    # elif request.method=='POST':
+    #     # uid=request.POST['uid']
+    #     # cao=request.POST['caozuo']
+    #     if int(cao)==1:
+    #         collection.remove({'_id':uid})
+    #         return HttpResponse('success')
+    #     elif int(cao)==0:
+    #         collection.find({"_id":uid})
+
 
 @csrf_exempt
 def freemusic(request):

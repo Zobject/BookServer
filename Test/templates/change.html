@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>changemusic</title>
+<style>
+
+
+
+</style>
+
+{{data}}
+</head>
+<body>
+<h1>修改freemusic资源</h1>
+
+    <form action="/changesome/" method="post">
+        音频标题：<input type="text" name="title" value={{data.title}} style="width:400px" ><br><br>
+        音频路径：<input type="text" name="musicurl"value={{data.url}} style="width:400px"><br><br>
+        图片路径：<input type="text" name="imgurl"value={{data.img}} style="width:400px"><br><br>
+        音乐标号：<input type="text" name="uid"value={{data.id}} style="width:400px"><br><br>
+        <input type="submit" >
+    </form>
+
+</body>
+</html>

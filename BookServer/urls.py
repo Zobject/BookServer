@@ -9,7 +9,10 @@ urlpatterns = [
     url(r'^addbook/', views.addbook),
     url(r'^addlisten/', views.addlisten),
     url(r'^addmusic',views.addmusic),
-
+    url(r'^freedelet/$',views.freedelet),
+    url(r'freechange/$',views.freechange),
+    url(r'changesomething/$',views.changesomething),
+    url(r'changesome/$',views.changesome),
     #bookcover API接口
     url(r'^getbooklist/$', views.booklist),
     url(r'^bookdetails/$', views.bookdetails),
