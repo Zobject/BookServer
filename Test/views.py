@@ -431,7 +431,8 @@ def freemusic(request):
                 top.append(data.next())
             else:
                 data = collection.find_one({'top': i})
-                top.append(data)
+                if data!=None:
+                 top.append(data)
         # other=list(collection.find({'id':{'$exists':'true'}}).sort('id'))
         result={'top':top,}
     return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
