@@ -6,12 +6,26 @@
 
 </head>
 <body>
+{{data}}
 {%for d in data %}
-    id：{{d.id}}<br>
+    {%if d.id in d  %} id： {{d.id}} {%endif%} {%if d.top%} top：{{d.top}} {%endif%}<br>
     标题：{{d.title}}<br>
     图片地址：{{d.img}}<br>
     音乐地址：{{d.url}}<br>
+
+ {%if d.top %}11111<br>
+<a href="/freedelet/?top={{d.top}}" >删除</a> <a href="/freechange/?top={{d.top}}"> 更改</a><br>
+{%endif%}
+
+
+
+
+ {%if d.id %}11111<br>
 <a href="/freedelet/?id={{d.id}}" >删除</a> <a href="/freechange/?id={{d.id}}"> 更改</a><br>
+{%endif%}
+
+
+
 {%endfor%}
 </body>
 </html>

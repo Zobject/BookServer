@@ -20,7 +20,13 @@
         音频标题：<input type="text" name="title" value={{data.title}} style="width:400px" ><br><br>
         音频路径：<input type="text" name="musicurl"value={{data.url}} style="width:400px"><br><br>
         图片路径：<input type="text" name="imgurl"value={{data.img}} style="width:400px"><br><br>
+        {%if data.id%}
         音乐标号：<input type="text" name="uid"value={{data.id}} style="width:400px"><br><br>
+        {%endif%}
+
+        {%if data.top%}
+        top音乐：<input type="text" name="top" value={{data.top}} style="width:400px"><br><br>
+        {%endif%}
         <input type="submit" >
     </form>
 

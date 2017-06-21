@@ -323,6 +323,8 @@ def test(request):
         data=content.get('date')
     return  HttpResponse(data,content_type='text/html')
 
+
+#添加音乐接口
 @csrf_exempt
 def addmusic(request):
     db=conn['FreeMusic']
@@ -331,58 +333,74 @@ def addmusic(request):
         title = request.POST['title']
         musicurl=request.POST['musicurl']
         imgurl=request.POST['imgurl']
-        uid=request.POST['uid']
-        print type(uid)
-        # print musicurl
-        doc = {'url': musicurl, 'title': title, 'img': imgurl,'_id':int(uid)}
-        if (collection.find({'_id':uid}).count()>0 or collection.find({'url':musicurl}).count()>0 ):
-            return HttpResponse('fail, already exist!')
+        uid = request.POST['uid']
+        if request.POST['uid']!='':
+            print 'xxxxxxx'
+            uid=request.POST['uid']
+            doc = {'url': musicurl, 'title': title, 'img': imgurl, 'id': int(uid)}
+
         else:
-            collection.insert(doc)
+            print 'aaaaa'
+            top = request.POST['top']
+            doc = {'url': musicurl, 'title': title, 'img': imgurl,'top':int(top),'time':datetime.datetime.now()}
+        collection.insert(doc)
         return  HttpResponse('success')
     else:
         return render(request,'addmusic.html')
 
 
+
+#删除音乐接口
 def freedelet(request):
     if request.method=='GET':
         db = conn['FreeMusic']
         collection = db.Music
         id=request.GET['id']
-        collection.remove({'_id':id})
+        collection.remove({'id':int(id)})
         return render(request, 'success.html')
 
+#单条更改更改数据接口
 def freechange(request):
 
     if request.method=='GET':
         db = conn['FreeMusic']
         collection = db.Music
-        id=request.GET['id']
-        data=collection.find_one({'_id':id})
-        data.update(id=data.pop("_id"))
+        if request.GET['top']!=None:
+            top=request.GET['top']
+            data = collection.find_one({'top': int(top)})
+        else:
+            uid = request.GET['uid']
+            data=collection.find_one({'id':int(uid)})
+        # data.update(id=data.pop("id"))
         return render(request, 'change.html', {'data': data})
 
+#更新成功接口
 @csrf_exempt
-
 def changesome(request):
     if request.method=='POST':
         db = conn['FreeMusic']
         collection = db.Music
         title = request.POST['title']
-        musicurl=request.POST['musicurl']
-        imgurl=request.POST['imgurl']
-        uid=request.POST['uid']
+        musicurl = request.POST['musicurl']
+        imgurl = request.POST['imgurl']
+        if request.POST.has_key('top'):
+            top=request.POST['top']
+            collection.update({'id': int(top)}, {'$set': {'url': musicurl, 'title': title, 'img': imgurl}})
+            return render(request,'success.html')
+        else:
+            uid = request.POST['uid']
+            collection.update({'id': int(uid)}, {'$set': {'url': musicurl, 'title': title, 'img': imgurl}})
+            return render(request, 'success.html')
 
-        collection.update({'_id': uid},{'$set':{'url': musicurl, 'title': title, 'img': imgurl, }})
-        return render(request, 'success.html')
 
+
+#数据更改主界面
 def changesomething(request):
     db=conn['FreeMusic']
     collection=db.Music
     if request.method=='GET':
             data=list(collection.find())
-            for d in  data:
-                d.update(id=d.pop('_id'))
+
     return render(request,'test.html',{'data':data})
 
     # elif request.method=='POST':
@@ -394,20 +412,26 @@ def changesomething(request):
     #     elif int(cao)==0:
     #         collection.find({"_id":uid})
 
-
+#返回数据接口
 @csrf_exempt
 def freemusic(request):
     result={}
     db=conn['FreeMusic']
     collection=db.Music
+    result=[]
+    top=[]
+    other=[]
     if request.method=='POST':
         coetent=JSONParser().parse(request)
         page=int(coetent.get('page'))
         print page
-        if int(page) >5:
-            result = {'result': 'null'}
-        else:
-            data=list(collection.find().skip((page-1)*50).limit(50).sort('_id'))
-            result={'result':data}
+        for i in range(1,11):
+            if collection.find({'top':i}).count()>1:
+                data=collection.find({'top':i}).sort([('time',pymongo.DESCENDING)])
+                top.append(data.next())
+            else:
+                data = collection.find({'top': i})
+                top.append(data.next())
+        other=list(collection.find({'id':{'$exists':'true'}}).sort('id'))
+        result={'top':top,'other':other}
     return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
-
