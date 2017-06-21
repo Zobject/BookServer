@@ -355,8 +355,8 @@ def freedelet(request):
     if request.method=='GET':
         db = conn['FreeMusic']
         collection = db.Music
-        id=request.GET['id']
-        collection.remove({'id':int(id)})
+        id=request.GET['top']
+        collection.remove({'top':int(id)})
         return render(request, 'success.html')
 
 #单条更改更改数据接口
