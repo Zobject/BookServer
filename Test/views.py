@@ -425,7 +425,7 @@ def freemusic(request):
         coetent=JSONParser().parse(request)
         page=int(coetent.get('page'))
         print page
-        for i in range(1,collection.find().count()):
+        for i in range(1,collection.find().count()+1):
             if collection.find({'top':i}).count()>1:
                 data=collection.find({'top':i}).sort([('time',pymongo.DESCENDING)])
                 top.append(data.next())
