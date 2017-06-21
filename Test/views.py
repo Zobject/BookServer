@@ -385,7 +385,7 @@ def changesome(request):
         imgurl = request.POST['imgurl']
         if request.POST.has_key('top'):
             top=request.POST['top']
-            collection.update({'id': int(top)}, {'$set': {'url': musicurl, 'title': title, 'img': imgurl}})
+            collection.update({'top': int(top)}, {'$set': {'url': musicurl, 'title': title, 'img': imgurl,'time':datetime.datetime.now()}})
             return render(request,'success.html')
         else:
             uid = request.POST['uid']
