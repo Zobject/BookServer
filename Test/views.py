@@ -147,7 +147,7 @@ def addlisten(request):
         #path='https://s3.us-east-2.amazonaws.com/bookmusic/'
         cover = 'http://52.15.123.162:8000/media/listen/'
         doc = {'Name': Name, 'Musicurl': musicurl, 'Author': Author, 'Press': Press, 'Column': Column,
-               'Recommended': Recommended,  'BookCover':cover+files[0], 'Brief': Brief, 'Musiccover': cover+files[1],
+               'Recommended': Recommended,  'BookCover':cover+files[0].name, 'Brief': Brief, 'Musiccover': cover+files[1].name,
                'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y.%m.%d"), 'Degree': random.randint(10000,100000)}
         print doc
         if (collection.find({"Name": Name}).count() > 0):
