@@ -10,7 +10,7 @@ body{ text-align:center}
 <body>
 <h1>添加听书资源</h1>
 
-    <form method = "post" enctype="multipart/form-data" >
+    <form method = "post" action="/addlisten/" >
      书 名: <input type="text" name="name"style="width:400px;" ><br><br>
 
     作 者:<input type="text" name="author" style="width:400px;"><br><br>
@@ -26,7 +26,9 @@ body{ text-align:center}
     简  介: <input type="text" name="brief"style="width:400px;height:60px"><br><br>
     <!--音频时长:<input type="text" name="Audio" style="width:400px;height:60px"><br><br>-->
     适合人群:<input type="text" name="Suitable"  style="width:400px;"><br><br>
-        音频文件:{{uf.as_p}}图书封面图:<br>{{uf.as_p}}<br> 音频封面图:<br>{{uf.as_p}}<br>
+        音频文件路径:<input type="text" name="musicurl"  style="width:400px;"><br><br>
+        图书封面路径：<input type="text" name="photocover"  style="width:400px;"><br><br>
+        音频封面路径：<input type="text" name="photoconten"  style="width:400px;"><br><br>
     <input type="submit" value="提交" style="width:50px;height:10px" />
     </form>
 
