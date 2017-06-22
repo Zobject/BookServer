@@ -1,4 +1,4 @@
-#coding=utf8
+#coding=utf-8
 from django import forms
 from DjangoUeditor.forms import UEditorField
 from django.views.decorators.csrf import csrf_exempt
@@ -17,6 +17,24 @@ import os
 import sys
 import threading
 
+
+
+
+
+
+
+
+
+
+
+import sys
+
+default_encoding = 'utf-8'
+if sys.getdefaultencoding() != default_encoding:
+    reload(sys)
+    sys.setdefaultencoding(default_encoding)
+
+    
 import boto3
 
 try:
@@ -54,6 +72,7 @@ def addbook(request):
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
+        print content
         replacebefore=str(content)
         replaceafter=replacebefore.replace('img src=\"','img src=\"http://52.15.123.162:8000')
         cover= 'http://52.15.123.162:8000/media/bookcover/'+f.name
