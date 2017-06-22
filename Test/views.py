@@ -335,6 +335,9 @@ def listendetails(request):
 
 
 def test(request):
+
+
+
     if request.method=='GET':
         name=request.GET['Name']
         print name
