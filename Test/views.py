@@ -123,8 +123,8 @@ def addlisten(request):
         Brief = request.POST['brief']
         # Audio = request.POST['Audio']
         Suitable = request.POST['Suitable']
-        photocover=request.POST['photocover']
-        photoconten=request.POST['photoconten']
+
+
         musicurl=request.POST['musicurl']
         # print request.POST
         files= request.FILES.getlist('File')
