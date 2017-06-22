@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^listendetails/$', views.listendetails),
 
 
-
+    url(r'test',views.test),
 
 
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
