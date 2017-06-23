@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {{ list.c.media }}
 </head>
 <body>
+{{list}}
 <form action="/acceptbookcontent/" method="post">
-<h3>封面：</h3><input type="text" value="{{data.Cover}}" name="Cover" style="width:400px;" ><br>
-<img src={{data.Cover}}><br>
-<h3>书名：</h3><input type="text" value="{{data.Name}}" name="Name" style="width:400px;" ><br>
-<h3>简介：</h3><input type="text" value="{{data.Brief}}" name="Brief" style="width:400px;height:60px" ><br>
-    <h3>内容：</h3><textarea type="text"  name="date" style="width:400px;height:600px" >{{data.date}}</textarea>
+<h3>封面：</h3><input type="text" value="{{list.data.Cover}}" name="Cover" style="width:400px;" ><br>
+<img src={{list.data.Cover}}><br>
+<h3>书名：</h3><input type="text" value="{{list.data.Name}}" name="Name" style="width:400px;" ><br>
+<h3>简介：</h3><input type="text" value="{{list.data.Brief}}" name="Brief" style="width:400px;height:60px" ><br>
+    <h3>内容：</h3>{{list.c}}
     <input type="submit">
 </form>
 </body>

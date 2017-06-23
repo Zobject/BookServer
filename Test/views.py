@@ -484,13 +484,19 @@ def bookdele(request):
 
 
 def changebookcontent(request):
+
     if request.method=='GET':
         db=conn['BookServer']
         name=request.GET['name']
         collection=db.Book
         print name
         data=collection.find_one({'Name':name})
-        return  render(request,'bookcontent.html',{'data':data})
+
+        class TestUEditorForm1(forms.Form):
+            date = UEditorField("描述", initial=data.get('date'), width=400, height=600)
+        c=TestUEditorForm1()
+        list={'data':data,'c':c}
+        return  render(request,'bookcontent.html',{'list':list})
 
 
 
@@ -514,7 +520,7 @@ def acceptbookcontent(request):
 def addphoto(request):
     if request.method=='POST':
         f= request.FILES.get('File')
-        print f.name
+        print f
         destination = open('./media/bookcover/' + f.name, 'wb+')
         for chunk in f.chunks():
             destination.write(chunk)
