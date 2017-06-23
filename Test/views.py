@@ -338,10 +338,8 @@ def listendetails(request):
 
 def test(request):
 
-
-
-    if request.method=='GET':
-        name=request.GET['Name']
+    if request.method=='POST':
+        name=request.POST['Name']
         print name
         content=collection.find_one({'Name':name})
         data=content.get('date')
