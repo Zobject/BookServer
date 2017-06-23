@@ -476,3 +476,29 @@ def bookdele(request):
         collection=db.Book
         data=collection.find_one({'Name':name})
         return  render(request,'')
+
+
+def changebookcontent(request):
+    if request.method=='GET':
+        db=conn['BookServer']
+        name=request.GET['name']
+        collection=db.Book
+        print name
+        data=collection.find_one({'Name':name})
+        return  render(request,'bookcontent.html',{'data':data})
+
+
+
+
+
+@csrf_exempt
+def acceptbookcontent(request):
+    if request.method=='POST':
+        db=conn['BookServer']
+        collection=db.Book
+        cover=request.POST['Cover']
+        name=request.POST['Name']
+        Brief=request.POST['Brief']
+        date=request.POST['date']
+        collection.update({'Name':name},{'$set':{'Brief':Brief,'Cover':cover,'date':date}})
+        return HttpResponse('success!')

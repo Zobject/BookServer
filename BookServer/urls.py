@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'freemusic/',views.freemusic),
 
     url(r'showbooklist',views.showbooklist),
+    url(r'changebookcontent',views.changebookcontent),
+    url(r'acceptbookcontent',views.acceptbookcontent),
 ]
 
 from django.conf import settings
