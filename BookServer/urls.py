@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'showbooklist',views.showbooklist),
     url(r'changebookcontent',views.changebookcontent),
     url(r'acceptbookcontent',views.acceptbookcontent),
+    url(r'addphoto',views.addphoto),
 ]
 
 from django.conf import settings

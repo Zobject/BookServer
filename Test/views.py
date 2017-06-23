@@ -507,3 +507,26 @@ def acceptbookcontent(request):
         date=request.POST['date']
         collection.update({'Name':name},{'$set':{'Brief':Brief,'Cover':cover,'date':date}})
         return HttpResponse('success!')
+
+
+
+@csrf_exempt
+def addphoto(request):
+    if request.method=='POST':
+        f= request.FILES.get('File')
+        print f.name
+        destination = open('./media/bookcover/' + f.name, 'wb+')
+        for chunk in f.chunks():
+            destination.write(chunk)
+        destination.close()
+
+
+        cover= 'http://52.15.123.162:8000/media/bookcover/'+f.name
+        #print replaceafter
+
+        return HttpResponse('success 路径为'+cover)
+    else:
+        url = UserForm()
+        print url
+
+        return  render(request,'addphoto.html',{'url':url})
