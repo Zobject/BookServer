@@ -194,6 +194,11 @@ def booklist(request):
         for i in  date:
             i['Upload'] = str(i.get('Upload'))
         if date!=None:
+            for d in date:
+                # d.get('_id')
+
+                d['_id']=str(d.get('_id'))
+               
             c['result']=list(reversed(date))
     return HttpResponse(json.dumps(c,default=json_util.default),status=200,content_type='application/json')
 
@@ -338,10 +343,12 @@ def listendetails(request):
 
 def test(request):
 
-    if request.method=='POST':
-        name=request.POST['Name']
+
+
+    if request.method=='GET':
+        name=request.GET['Name']
         print name
-        content=collection.find_one({'Name':name})
+        content=collection.find_one({'_id':ObjectId(name)})
         data=content.get('date')
     return  HttpResponse(data,content_type='text/html')
 
