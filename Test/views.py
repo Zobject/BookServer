@@ -460,3 +460,19 @@ def freemusic(request):
         # other=list(collection.find({'id':{'$exists':'true'}}).sort('id'))
         result={'top':top,}
     return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
+
+
+def showbooklist(request):
+    if request.method=='GET':
+        db=conn['BookServer']
+        collection=db.Book
+        data=list(collection.find())
+        return render(request,'showbooklist.html',{'data':data})
+
+def bookdele(request):
+    if request.method=='GET':
+        db=conn['BookServer']
+        name=request.GET['name']
+        collection=db.Book
+        data=collection.find_one({'Name':name})
+        return  render(request,'')

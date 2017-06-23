@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{%for d in data%}
+
+<h3>封面：</h3>{{d.Cover}}<br>
+<img src={{d.Cover}}><br>
+<h3>书名：</h3>{{d.Name}}<br>
+<h3>简介：</h3>{{d.Brief}}<br>
+<h3>内容：</h3>{{d.date}}<br>
+<a href="/bookdele/?name={{d.Name}}" >删除</a> <a href="/freechange/?id={{d.id}}"> 更改</a><br>
+
+{%endfor%}
+</body>
+</html>

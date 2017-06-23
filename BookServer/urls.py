@@ -37,6 +37,8 @@ urlpatterns = [
 
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
     url(r'freemusic/',views.freemusic),
+
+    url(r'showbooklist',views.showbooklist),
 ]
 
 from django.conf import settings
