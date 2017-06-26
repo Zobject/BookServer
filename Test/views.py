@@ -584,8 +584,8 @@ def listenchange(request):
     if request.method=='GET':
         db = conn['BookServer']
         collection = db.Listen
-        name=request.GET['name']
-        data = collection.find_one({'Name':name})
+        name=request.GET['id']
+        data = collection.find_one({'_id':ObjectId(id)})
 
 
         # data.update(id=data.pop("id"))
