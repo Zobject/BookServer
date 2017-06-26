@@ -11,10 +11,10 @@ import pymongo
 import json
 from  bson import json_util , ObjectId
 # Create your views here.
-import  cgi
+
 
 import os
-import sys
+
 import threading
 
 import sys
@@ -112,6 +112,7 @@ def addlisten(request):
 
 
         musicurl=request.POST['musicurl']
+        musicsize=request.POST['MusicSize']
         # print request.POST
         files= request.FILES.getlist('File')
         print files
@@ -134,7 +135,7 @@ def addlisten(request):
         cover = 'http://52.15.123.162:8000/media/listen/'
         doc = {'Name': Name, 'Musicurl': musicurl, 'Author': Author, 'Press': Press, 'Column': Column,
                'Recommended': Recommended,  'BookCover':cover+files[0].name, 'Brief': Brief, 'Musiccover': cover+files[1].name,
-               'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y.%m.%d"), 'Degree': random.randint(10000,100000)}
+               'Suitable': Suitable, 'Upload': datetime.datetime.now().strftime("%Y.%m.%d"), 'Degree': random.randint(10000,100000),'MusicSize':musicsize}
         print doc
         if (collection.find({"Name": Name}).count() > 0):
             return HttpResponse('already exist!')
@@ -572,6 +573,59 @@ def freemusicandroid(request):
 
 
 
+
+
+
+
+
+#单条更改更改数据接口
+def listenchange(request):
+
+    if request.method=='GET':
+        db = conn['BookServer']
+        collection = db.Listen
+        name=request.GET['name']
+        data = collection.find_one({'Name':name})
+
+
+        # data.update(id=data.pop("id"))
+        return render(request, 'newtest.html', {'data': data})
+
+#更新成功接口
+@csrf_exempt
+def changelistensome(request):
+    if request.method=='POST':
+        db = conn['BookServer']
+        collection = db.Listen
+        if request.method == 'POST':
+            # url=UserForm(request.POST,request.FILES)
+            collection = db.Listen
+            Name = request.POST['name']
+            # Musicurl = request.GET['musicurl']
+            Author = request.POST['author']
+            Press = request.POST['Press']
+            Column = request.POST['Column']
+            Recommended = request.POST['Recommended']
+            # Probation = request.POST['Probation']
+            # Cover = request.GET['Cover']
+            Brief = request.POST['brief']
+            # Audio = request.POST['Audio']
+            Suitable = request.POST['Suitable']
+
+            musicurl = request.POST['musicurl']
+
+            # print request.POST
+            BookCover= request.POST['BookCover']
+            MusicCover= request.POST['MusicCover']
+            MusicSize= request.POST['MusicSize']
+            Upload=request.POST['Upload']
+            Degree=request.POST['Degree']
+            collection.update ( {'Name': Name, },{'$set':{'Musicurl': musicurl, 'Author': Author, 'Press': Press, 'Column': Column,
+                   'Recommended': Recommended, 'BookCover': BookCover, 'Brief': Brief,
+                   'Musiccover': MusicCover,
+                   'Suitable': Suitable, 'Upload':Upload,
+                   'Degree':Degree,'MusicSize':MusicSize}})
+            return  HttpResponse("success")
 
 
 

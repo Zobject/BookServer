@@ -10,9 +10,9 @@ urlpatterns = [
     url(r'^addlisten/', views.addlisten),
     url(r'^addmusic',views.addmusic),
     url(r'^freedelet/$',views.freedelet),
-    url(r'freechange/$',views.freechange),
-    url(r'changesomething/$',views.changesomething),
-    url(r'changesome/$',views.changesome),
+    url(r'^freechange/$',views.freechange),
+    url(r'^changesomething/$',views.changesomething),
+    url(r'^changesome/$',views.changesome),
 
 
     #添加音乐接口到android
@@ -42,16 +42,22 @@ urlpatterns = [
     url(r'^listendetails/$', views.listendetails),
 
 
-    url(r'test',views.test),
+    url(r'^test',views.test),
 
 
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
-    url(r'freemusic/',views.freemusic),
+    url(r'^freemusic/',views.freemusic),
 
-    url(r'showbooklist',views.showbooklist),
-    url(r'changebookcontent',views.changebookcontent),
-    url(r'acceptbookcontent',views.acceptbookcontent),
-    url(r'addphoto',views.addphoto),
+    url(r'^showbooklist',views.showbooklist),
+    url(r'^changebookcontent',views.changebookcontent),
+    url(r'^acceptbookcontent',views.acceptbookcontent),
+    url(r'^addphoto',views.addphoto),
+
+
+    #更改听书接口
+
+    url(r'^changelistensome/$',views.changelistensome),
+    url(r'^listenchange/$',views.listenchange),
 ]
 
 from django.conf import settings

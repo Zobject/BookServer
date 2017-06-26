@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+{{data}}
+   <form method = "post" action="/changelistensome/" >
+
+
+
+     书 名: <input type="text"  value="{{data.Name}}" name="name"style="width:400px;" ><br><br>
+
+    作 者:<input type="text" value="{{data.Author}}" name="author" style="width:400px;"><br><br>
+    出版社:<input type="text" value="{{data.Press}}" name="Press" style="width:400px;"><br><br>
+    栏 目:<input type="text"  value="{{data.Press}}" name="Column" >
+    音频大小:<input type="text"  name="MusicSize" >
+        <br><br>
+    推荐语:<input type="text"  value="{{data.Recommended}}" name="Recommended"style="width:400px;height:60px" ><br><br>
+    <!--试   读: <input type="text" name="Probation" style="width:400px;height:60px"><br><br>-->
+上传时间: <input type="text" value="{{data.Upload}}" name="Upload"style="width:400px;height:60px"><br><br>
+       热度: <input type="text" value="{{data.Degree}}" name="Degree"style="width:400px;height:60px"><br><br>
+
+    简  介: <input type="text" value="{{data.Brief}}" name="brief"style="width:400px;height:60px"><br><br>
+    <!--音频时长:<input type="text" name="Audio" style="width:400px;height:60px"><br><br>-->
+    适合人群:<input type="text" value="{{data.Suitable}}" name="Suitable"  style="width:400px;"><br><br>
+        音频文件:<input type="text" value="{{data.Musicurl}}" name="musicurl"style="width:400px;" ><br><br>
+       图书封面图:<input type="text" value="{{data.BookCover}}" name="BookCover"style="width:400px;" ><br><br>
+       音频封面图:<input type="text" value="{{data.Musiccover}}" name="MusicCover"style="width:400px;" ><br><br>
+
+
+    <input type="submit" value="提交" style="width:50px;height:10px" />
+  </form>
+
+
+
+</body>
+</html>
+
+<!--?page={{id}}-->
