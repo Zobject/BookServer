@@ -13,6 +13,16 @@ urlpatterns = [
     url(r'freechange/$',views.freechange),
     url(r'changesomething/$',views.changesomething),
     url(r'changesome/$',views.changesome),
+
+
+    #添加音乐接口到android
+    url(r'^android/$',views.addmusicandroid),
+    #anroid 请求接口
+    url(r'^getfreemusicandroid',views.freemusicandroid),
+
+
+
+
     #bookcover API接口
     url(r'^getbooklist/$', views.booklist),
     url(r'^bookdetails/$', views.bookdetails),

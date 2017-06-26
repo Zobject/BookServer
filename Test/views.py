@@ -17,16 +17,6 @@ import os
 import sys
 import threading
 
-
-
-
-
-
-
-
-
-
-
 import sys
 
 default_encoding = 'utf-8'
@@ -48,10 +38,6 @@ collection=db.Book
 
 class UserForm(forms.Form):
     File = forms.FileField()
-
-
-
-
 
 #UEditor
 class TestUEditorForm(forms.Form):
@@ -498,10 +484,6 @@ def changebookcontent(request):
         list={'data':data,'c':c}
         return  render(request,'bookcontent.html',{'list':list})
 
-
-
-
-
 @csrf_exempt
 def acceptbookcontent(request):
     if request.method=='POST':
@@ -514,8 +496,7 @@ def acceptbookcontent(request):
         collection.update({'Name':name},{'$set':{'Brief':Brief,'Cover':cover,'date':date}})
         return HttpResponse('success!')
 
-
-
+#添加照片的接口
 @csrf_exempt
 def addphoto(request):
     if request.method=='POST':
@@ -525,14 +506,72 @@ def addphoto(request):
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
-
-
         cover= 'http://52.15.123.162:8000/media/bookcover/'+f.name
         #print replaceafter
-
         return HttpResponse('success 路径为'+cover)
     else:
         url = UserForm()
         print url
-
         return  render(request,'addphoto.html',{'url':url})
+
+
+#android添加音乐接口
+
+@csrf_exempt
+def addmusicandroid(request):
+    db=conn['FreeMusic']
+    collection=db.MusicAandroid
+    if request.method=='POST':
+        title = request.POST['title']
+        musicurl=request.POST['musicurl']
+        imgurl=request.POST['imgurl']
+        uid = request.POST['uid']
+        if request.POST['uid']!='':
+            print '11111111'
+            uid=request.POST['uid']
+            doc = {'url': musicurl, 'title': title, 'img': imgurl, 'id': int(uid)}
+
+        else:
+            print '22222222'
+            top = request.POST['top']
+            doc = {'url': musicurl, 'title': title, 'img': imgurl,'top':int(top),'time':datetime.datetime.now()}
+        collection.insert(doc)
+        return  HttpResponse('success')
+    else:
+        return render(request,'addmusicandroid.html')
+
+
+#android 返回数据接口
+
+@csrf_exempt
+def freemusicandroid(request):
+    db=conn['FreeMusic']
+    collection=db.MusicAandroid
+    result=[]
+    top=[]
+
+    if request.method=='GET':
+
+        for i in range(1,collection.find().count()+1):
+            if collection.find({'top':i}).count()>1:
+                data=collection.find({'top':i}).sort([('time',pymongo.DESCENDING)])
+                top.append(data.next())
+            else:
+                data = collection.find_one({'top': i})
+                if data!=None:
+                 top.append(data)
+        # other=list(collection.find({'id':{'$exists':'true'}}).sort('id'))
+        result={'top':top}
+    return HttpResponse(json.dumps(result,default=json_util.default),status=200,content_type='application/json')
+
+
+
+
+
+
+
+
+
+
+
+
