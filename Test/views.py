@@ -322,7 +322,7 @@ def listendetails(request):
         date=collection.find({'Name':Name}).next()
         date['Upload']=str(date.get('Upload'))
         #print date
-        date['Degree']=int(date.get('Degree'))
+        #date['Degree']=int(date.get('Degree'))
         collection.update({'Name':Name},{'$inc':{'Degree':random.randint(1,10)}})
     return HttpResponse(json.dumps(date,default=json_util.default),status=200,content_type='application/json')
 
@@ -625,7 +625,7 @@ def changelistensome(request):
                    'Recommended': Recommended, 'BookCover': BookCover, 'Brief': Brief,
                    'Musiccover': MusicCover,
                    'Suitable': Suitable, 'Upload':Upload,
-                   'Degree':Degree,'MusicSize':MusicSize}})
+                   'Degree':int(Degree),'MusicSize':MusicSize}})
             return  HttpResponse("success")
 
 
