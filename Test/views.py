@@ -620,7 +620,7 @@ def changelistensome(request):
             MusicCover= request.POST['MusicCover']
             MusicSize= request.POST['MusicSize']
             Upload=request.POST['Upload']
-            Degree=request.POST['Degree']
+            Degree=int(request.POST['Degree'])
             collection.update ( {'Name': Name, },{'$set':{'Musicurl': musicurl, 'Author': Author, 'Press': Press, 'Column': Column,
                    'Recommended': Recommended, 'BookCover': BookCover, 'Brief': Brief,
                    'Musiccover': MusicCover,
