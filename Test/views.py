@@ -217,7 +217,7 @@ def createuserinfo(request):
 
 @csrf_exempt
 def createuserlove(request):
-    collection=db.Book
+    collection=db.Listen
     if request.method == "POST":
         content = JSONParser().parse(request)
         Name = content.get('Name')
