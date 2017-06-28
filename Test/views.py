@@ -283,20 +283,30 @@ def listenlist(request):
         sum=content.get('sum')
        # page=request.GET['page']
         booksum = collection.find().count()
+        #上拉加载
         if int(target)==1:
             #sum=collection.find().count()
+            #第一页 返回数据库第一页数据并且求的当前的数据库数目以供下拉刷新使用
             if int(page)==1:
                 sumindatabase = collection.find().count()
                 c = {"sum": str(sumindatabase)}
+            #判读如果数据库数据小于5 返回全部的数据
             if  booksum < 5 and int(page)== 1 :
                  date = list(collection.find())
             else:
-                if int(page)==booksum/5+1:
-                    date = list(collection.find().limit((booksum-5*(int(page)))%5))
+                #判断如果是最后一页根据具体剩余数目进行返回
+                if int(page)==int(sum)/5+1:
+                    if int(sum)>(int(page)-1)*5:
+                        date = list(collection.find().skip().limit((int(sum)-5*(int(page)))%5))
+                    else:
+                        date=[]
+                #如果请求的页数大于 数据库页数返回空
                 elif int(page)>booksum/5+1:
                     date=[]
+                #如果是正常的数据返回 具体的某一页数据
                 else:
-                    date=list(collection.find().skip(booksum-5*(int(page))).limit(5))
+                    date=list(collection.find().skip(int(sum)-5*(int(page))).limit(5))
+        #下拉刷新
         if int(target)==0:
             if int(sum) < booksum:
                 date=list(collection.find().skip(int(sum)))
