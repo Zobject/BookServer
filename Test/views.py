@@ -295,11 +295,11 @@ def listenlist(request):
                  date = list(collection.find())
             else:
                 #判断如果是最后一页根据具体剩余数目进行返回
-                if int(page)==int(sum)/5+1:
-                    if int(sum)>(int(page)-1)*5:
-                        date = list(collection.find().skip().limit((int(booksum)-5*(int(page)))%5))
+                if int(page)==booksum/5+1:
+                    if int(booksum) > (int(page) - 1) * 5:
+                        date = list(collection.find().limit((int(booksum) - 5 * (int(page))) % 5))
                     else:
-                        date=[]
+                        date = []
                 #如果请求的页数大于 数据库页数返回空
                 elif int(page)>booksum/5+1:
                     date=[]
